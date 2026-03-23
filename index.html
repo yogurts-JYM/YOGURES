@@ -103,6 +103,7 @@ body.dark .close{background:#cc0000}
 <script>
 // Sonido
 let sonido = new Audio("comprarr.mp3");
+let sonido = new Audio("like.mp3");
 
 // Favoritos
 let favoritos = JSON.parse(localStorage.getItem("likes")) || [];
@@ -149,8 +150,19 @@ function renderProductos(lista=productos){
 function buscar(){let t=document.getElementById("buscador").value.toLowerCase(); renderProductos(productos.filter(p=>p.name.toLowerCase().includes(t)));}
 
 // Favoritos
-function toggleLike(i){if(favoritos.includes(i)) favoritos=favoritos.filter(x=>x!==i); else favoritos.push(i); guardarLikes(); renderProductos();}
+function toggleLike(i){
+  sonidoLike.currentTime = 0;
+  sonidoLike.play();
 
+  if(favoritos.includes(i)) {
+    favoritos = favoritos.filter(x=>x!==i);
+  } else {
+    favoritos.push(i);
+  }
+
+  guardarLikes();
+  renderProductos();
+}
 // Agregar al carrito
 function add(i,btn){
   if(productos[i].stock<=0){alert("Producto agotado"); return;}
